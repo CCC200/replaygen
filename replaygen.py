@@ -16,12 +16,40 @@ def convert_log(f):
     n = str(r["timestamp"]) + '-' + r["id"].split('battle-')[1] + '.html'
     p = out_dir + '/' + n
     if os.path.isfile(p): # log already converted
-        return
+        return 0
     html = Download.create_replay(r)
     rfile = open(p, 'w')
     rfile.write(html)
     rfile.close()
-    print('Generated ' + n)
+    print(f'Generated {n}')
+    return 1
+    
+
+def build_index():
+    replayfiles = [] # 0 = filename, 1 = title
+    # scan folder for replay files and build list
+    with os.scandir(out_dir) as d:
+        for e in d:
+            if e.name != 'index.html':
+                f = open(e.path, 'r')
+                lines = f.readlines()
+                f.close()
+                title = lines[3].replace("<title>", "").replace("</title>", "")
+                replayfiles.append([e.name, title])
+    # load template
+    templatefile = open('index-template.html', 'r')
+    html = templatefile.read()
+    templatefile.close()
+    # add list entries
+    listentries = ''
+    for r in replayfiles:
+        listentries = f'<a href="{r[0]}" target="_blank">{r[1]}</a>' + listentries
+    html = html.replace('<!-- REPLAY_ENTRIES -->', listentries)
+    # write file
+    indexfile = open(out_dir + '/index.html', 'w')
+    indexfile.write(html)
+    indexfile.close()
+    print('Index file updated')
     
 
 def scan_logs():
@@ -38,11 +66,15 @@ def scan_logs():
             for e in d:
                 subdirs.append(e.path)
     # scan for logs and convert
+    gens = 0
     for dir in subdirs:
         with os.scandir(dir) as d:
             for e in d:
                 if e.is_file() and e.name.find('.log.json') > -1:
-                    convert_log(e.path)
+                    gens += convert_log(e.path)
+    if gens > 0:
+        print(f'{gens} replays generated, rebuilding index...')
+        build_index()
     
     
 
