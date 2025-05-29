@@ -51,7 +51,7 @@ def build_index():
     indexfile = open(out_dir + '/index.html', 'w')
     indexfile.write(html)
     indexfile.close()
-    print('Index file updated')
+    print('Index updated')
     
 
 def scan_logs():
@@ -83,13 +83,13 @@ def scan_logs():
 
 # load config json
 if not os.path.isfile('config.json'):
-    print('config.json does not exist, creating default...')
+    print('Config does not exist, creating default...')
     shutil.copyfile('config-template.json', 'config.json')
 configfile = open('config.json', 'r')
 configdata = configfile.read()
 configfile.close()
 config = json.loads(configdata)
-print('config.json loaded')
+print('Config loaded')
 # check directories
 log_dir = config["log_dir"]
 out_dir = config["out_dir"]
@@ -98,6 +98,9 @@ if not os.path.isdir(log_dir):
     sys.exit(1)
 if not os.path.isdir(out_dir):
     os.mkdir(out_dir)
+if not os.path.isfile(out_dir + '/index.html'):
+    print('Index does not exist, creating default...')
+    shutil.copyfile('index-template.html', out_dir + '/index.html')
 # scan current folder
 print('Scanning for logs...')
 while True:
