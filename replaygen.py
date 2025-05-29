@@ -65,6 +65,8 @@ def scan_logs(full = False):
     else:
         dt = datetime.datetime.now()
         curdir = log_dir + "/" + dt.strftime("%Y-%m")
+        if not os.path.isdir(curdir): # no replays to scan
+            return
         basedirs.append(curdir)
     topdirs = []
     subdirs = []
