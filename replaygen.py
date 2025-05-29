@@ -54,15 +54,25 @@ def build_index():
     print('Index updated')
     
 
-def scan_logs():
-    dt = datetime.datetime.now()
-    curdir = log_dir + "/" + dt.strftime("%Y-%m")
+def scan_logs(full = False):
+    basedirs = []
+    if full:
+        exclude = ['chat', 'modlog', 'randbats', 'repl', 'tickets']
+        with os.scandir(log_dir) as d:
+            for e in d:
+                if os.path.isdir(e.path) and e.name not in exclude:
+                    basedirs.append(e.path)
+    else:
+        dt = datetime.datetime.now()
+        curdir = log_dir + "/" + dt.strftime("%Y-%m")
+        basedirs.append(curdir)
     topdirs = []
     subdirs = []
     # build list of log directories
-    with os.scandir(curdir) as d:
-        for e in d:
-            topdirs.append(e.path)
+    for dir in basedirs:
+        with os.scandir(dir) as d:
+            for e in d:
+                topdirs.append(e.path)
     for dir in topdirs:
         with os.scandir(dir) as d:
             for e in d:
@@ -77,13 +87,14 @@ def scan_logs():
     if gens > 0:
         print(f'{gens} replays generated, rebuilding index...')
         build_index()
-    
-    
 
+def scan_full():
+    print('Starting full scan...')
+    scan_logs(True)
 
 # load config json
 if not os.path.isfile('config.json'):
-    print('Config does not exist, creating default...')
+    print('Config does not exist, creating default...', end=' ')
     shutil.copyfile('config-template.json', 'config.json')
 configfile = open('config.json', 'r')
 configdata = configfile.read()
@@ -101,8 +112,9 @@ if not os.path.isdir(out_dir):
 if not os.path.isfile(out_dir + '/index.html'):
     print('Index does not exist, creating default...')
     shutil.copyfile('index-template.html', out_dir + '/index.html')
-# scan current folder
-print('Scanning for logs...')
+# full scan then loop
+scan_full()
+print('Scanning for new logs...')
 while True:
     scan_logs()
     time.sleep(60)
