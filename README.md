@@ -1,5 +1,5 @@
 # replaygen
-Generate Pokemon Showdown replays from server logs automatically, and view them in-browser, iOS 6 style.
+Generate Pokemon Showdown replays from server logs automatically, and view them in-browser, old iOS style.
 
 ![Screenshot](https://i.imgur.com/ja8Jq7l.png)
 
