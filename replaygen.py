@@ -26,16 +26,18 @@ def convert_log(f):
     
 
 def build_index():
-    replayfiles = [] # 0 = filename, 1 = title
+    replayfiles = [] # 0 = filename, 1 = title, 2 = timestamp
     # scan folder for replay files and build list
     with os.scandir(out_dir) as d:
         for e in d:
             if e.name != 'index.html':
+                unix = int(e.name.split('-')[0])
+                timestamp = datetime.date.fromtimestamp(unix)
                 f = open(e.path, 'r')
                 lines = f.readlines()
                 f.close()
                 title = lines[3].replace("<title>", "").replace("</title>", "")
-                replayfiles.append([e.name, title])
+                replayfiles.append([e.name, title, timestamp])
     # load template
     templatefile = open('index-template.html', 'r')
     html = templatefile.read()
@@ -43,7 +45,7 @@ def build_index():
     # add list entries
     listentries = ''
     for r in replayfiles:
-        listentries = f'<a href="{r[0]}" target="_blank">{r[1]}</a>' + listentries
+        listentries = f'<a href="{r[0]}" target="_blank">{r[1]}<br><small>{r[2]}</small></a>' + listentries
     html = html.replace('<!-- REPLAY_ENTRIES -->', listentries)
     # write file
     indexfile = open(out_dir + '/index.html', 'w')
