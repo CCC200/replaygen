@@ -42,12 +42,38 @@
         a:hover {
             color: #7b82a0;
         }
+        select {
+            width: 30%;
+            font-size: large;
+        }
     </style>
 </head>
 <body>
     <h1 align="center">Replays</h1>
     <p align="center">
+        <select id="formatfilter" onchange="changeFilter()">
+            <option value="all">All</option>
+            <!-- FORMAT_FILTERS -->
+        </select>
+    </p>
+    <p id="replayentries" align="center">
         <!-- REPLAY_ENTRIES -->
     </p>
 </body>
+<script>
+var replay_cache;
+window.onload = (event) => {
+  replay_cache = document.getElementById("replayentries").innerHTML;
+};
+function changeFilter() {
+    var fval = document.getElementById("formatfilter").value;
+    var replayp = document.getElementById("replayentries");
+    replayp.innerHTML = replay_cache;
+    if(fval == 'all') return;
+    const entries = replayp.querySelectorAll("a");
+    entries.forEach(function(a) {
+        if(!a.innerHTML.includes(fval)) a.remove();
+    });
+}
+</script>
 </html>
