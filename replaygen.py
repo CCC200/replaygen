@@ -95,7 +95,10 @@ def scan_logs(full = False):
                 if e.is_file() and e.name.find('.log.json') > -1:
                     gens += convert_log(e.path)
     if gens > 0:
-        print(f'{gens} replays generated, rebuilding index...')
+        print(f'{gens} replays generated, rebuilding index...', end=' ')
+        build_index()
+    elif full:
+        print('Rebuilding index...', end=' ')
         build_index()
 
 def scan_full():
