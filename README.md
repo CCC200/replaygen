@@ -1,7 +1,7 @@
 # replaygen
 Generate Pokemon Showdown replays from server logs automatically, and view them in-browser, old iOS style.
 
-![Screenshot](https://i.imgur.com/ja8Jq7l.png)
+![Screenshot](https://i.imgur.com/iZOsISS.png)
 
 ## Install
 Clone the repo and run `pip install -r requirements.txt`
