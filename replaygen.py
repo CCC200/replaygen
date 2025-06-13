@@ -4,6 +4,13 @@ import json, os, shutil, sys, datetime, time
 log_dir = ''
 out_dir = ''
 client_url = 'https://play.pokemonshowdown.com'
+formats = []
+
+def is_format(n):
+    if len(formats) == 0 or n in formats:
+        return True
+    else:
+        return False
 
 def convert_log(f):
     # f = filepath
@@ -83,7 +90,8 @@ def scan_logs(full = False):
     for dir in basedirs:
         with os.scandir(dir) as d:
             for e in d:
-                topdirs.append(e.path)
+                if is_format(e.name):
+                    topdirs.append(e.path)
     for dir in topdirs:
         with os.scandir(dir) as d:
             for e in d:
@@ -118,6 +126,8 @@ print('Config loaded')
 # optional params
 if "client_url" in config:
     client_url = config["client_url"]
+if "formats" in config:
+    formats = config["formats"]
 # check directories
 log_dir = config["log_dir"]
 out_dir = config["out_dir"]
