@@ -3,6 +3,7 @@ import json, os, shutil, sys, datetime, time
 
 log_dir = ''
 out_dir = ''
+client_url = 'https://play.pokemonshowdown.com'
 
 def convert_log(f):
     # f = filepath
@@ -17,7 +18,7 @@ def convert_log(f):
     p = out_dir + '/' + n
     if os.path.isfile(p): # log already converted
         return 0
-    html = Download.create_replay(r)
+    html = Download.create_replay(r, client_url + '/js/replay-embed.js')
     rfile = open(p, 'w')
     rfile.write(html)
     rfile.close()
@@ -92,7 +93,7 @@ def scan_logs(full = False):
     for dir in subdirs:
         with os.scandir(dir) as d:
             for e in d:
-                if e.is_file() and e.name.find('.log.json') > -1:
+                if e.is_file() and '.log.json' in e.name:
                     gens += convert_log(e.path)
     if gens > 0:
         print(f'{gens} replays generated, rebuilding index...', end=' ')
@@ -114,6 +115,9 @@ configdata = configfile.read()
 configfile.close()
 config = json.loads(configdata)
 print('Config loaded')
+# optional params
+if "client_url" in config:
+    client_url = config["client_url"]
 # check directories
 log_dir = config["log_dir"]
 out_dir = config["out_dir"]
