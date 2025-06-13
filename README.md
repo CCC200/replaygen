@@ -12,3 +12,8 @@ Clone the repo and run `pip install -r requirements.txt`
 3. Run `py replaygen.py`
 
 A full scan of all replays will be done at boot, and afterwards it will scan the most recent directory every 60 seconds.
+
+## Optional params
+There are some additional parameters you can add to your config file:
+- **client_url**: String pointing to a specific Showdown client. Useful if your server has formats with custom sprites, backgrounds etc.
+- **formats**: An array of format names, i.e. `formats: ["gen1ou", "gen2ou"]` etc. Will only generate replays for matching games.
