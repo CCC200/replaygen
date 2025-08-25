@@ -15,7 +15,7 @@ def is_format(n):
 def convert_log(f):
     # f = filepath
     # get battle log as json
-    logfile = open(f, 'r')
+    logfile = open(f, 'r', encoding='utf-8')
     logdata = logfile.read()
     logfile.close()
     log = json.loads(logdata)
@@ -26,7 +26,7 @@ def convert_log(f):
     if os.path.isfile(p): # log already converted
         return 0
     html = Download.create_replay(r, client_url + '/js/replay-embed.js')
-    rfile = open(p, 'w')
+    rfile = open(p, 'w', encoding='utf-8')
     rfile.write(html)
     rfile.close()
     print(f'Generated {n}')
@@ -42,7 +42,7 @@ def build_index():
             if e.name != 'index.html':
                 unix = int(e.name.split('-')[0])
                 timestamp = datetime.date.fromtimestamp(unix)
-                f = open(e.path, 'r')
+                f = open(e.path, 'r', encoding='utf-8')
                 lines = f.readlines()
                 f.close()
                 title = lines[3].replace("<title>", "").replace("</title>", "")
