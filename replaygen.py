@@ -5,12 +5,19 @@ log_dir = ''
 out_dir = ''
 client_url = 'https://play.pokemonshowdown.com'
 formats = []
+rated = []
 
 def is_format(n):
     if 'all' in formats or n in formats:
         return True
     else:
         return False
+    
+def is_rated(log):
+    for r in rated:
+        if f'rated|{r}' in log:
+            return True
+    return False
 
 def convert_log(f):
     # f = filepath
@@ -21,7 +28,11 @@ def convert_log(f):
     log = json.loads(logdata)
     # build replay file
     r = Replay.create_replay_object(log)
-    n = str(r["timestamp"]) + '-' + r["id"].split('battle-')[1] + '.html'
+    r_id = r["id"].split('battle-')[1]
+    r_format = r_id.split('-')[0]
+    if not is_format(r_format) and not is_rated(r["log"]): # match conditions
+        return 0
+    n = str(r["timestamp"]) + '-' + r_id + '.html'
     p = out_dir + '/' + n
     if os.path.isfile(p): # log already converted
         return 0
@@ -90,8 +101,7 @@ def scan_logs(full = False):
     for dir in basedirs:
         with os.scandir(dir) as d:
             for e in d:
-                if is_format(e.name):
-                    topdirs.append(e.path)
+                topdirs.append(e.path)
     for dir in topdirs:
         with os.scandir(dir) as d:
             for e in d:
@@ -128,6 +138,8 @@ if "client_url" in config:
     client_url = config["client_url"]
 if "formats" in config:
     formats = config["formats"]
+if "rated" in config:
+    rated = config["rated"]
 # check directories
 log_dir = config["log_dir"]
 out_dir = config["out_dir"]
