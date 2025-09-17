@@ -1,4 +1,5 @@
 {
     "log_dir": "logs",
-    "out_dir": "build"
+    "out_dir": "build",
+    "formats": "all"
 }

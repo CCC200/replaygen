@@ -7,7 +7,7 @@ client_url = 'https://play.pokemonshowdown.com'
 formats = []
 
 def is_format(n):
-    if len(formats) == 0 or n in formats:
+    if 'all' in formats or n in formats:
         return True
     else:
         return False
