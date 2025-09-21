@@ -52,7 +52,7 @@ def build_index():
         for e in d:
             if e.name != 'index.html':
                 unix = int(e.name.split('-')[0])
-                timestamp = datetime.date.fromtimestamp(unix)
+                timestamp = datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S')
                 f = open(e.path, 'r', encoding='utf-8')
                 lines = f.readlines()
                 f.close()
