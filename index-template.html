@@ -48,7 +48,8 @@
         a:hover {
             color: #7b82a0;
         }
-        select {
+        select, input {
+            display: block;
             @media screen and (min-width: 300px) {
                 width: 80%;
             }
@@ -56,17 +57,19 @@
                 width: 40%;
             }
             font-size: large;
+            margin-bottom: 0.5em;
         }
     </style>
 </head>
 <body>
     <h1 align="center">Replays</h1>
-    <p align="center">
+    <div align="center">
         <select id="formatfilter" onchange="changeFilter()">
             <option value="all">All</option>
             <!-- FORMAT_FILTERS -->
         </select>
-    </p>
+        <input id="searchfilter" type="text" placeholder="Search" onkeyup="searchFilter()">
+    </div>
     <p id="replayentries" align="center">
         <!-- REPLAY_ENTRIES -->
     </p>
@@ -74,17 +77,35 @@
 <script>
 var replay_cache;
 window.onload = (event) => {
-  replay_cache = document.getElementById("replayentries").innerHTML;
+    replay_cache = document.getElementById("replayentries").innerHTML;
+    document.getElementById("formatfilter").value = "all";
 };
-function changeFilter() {
-    var fval = document.getElementById("formatfilter").value;
+function resetReplays() {
     var replayp = document.getElementById("replayentries");
     replayp.innerHTML = replay_cache;
-    if(fval == 'all') return;
+    return replayp;
+}
+function changeFilter() {
+    var replayp = resetReplays();
+    var fval = document.getElementById("formatfilter").value;
+    if(fval == "all") return;
     const entries = replayp.querySelectorAll("a");
     entries.forEach(function(a) {
-        if(!a.innerHTML.includes(fval)) a.style.display = "none";
+        let mformat = a.innerHTML.split(": ")[0];
+        if(!mformat.includes(fval)) a.style.display = "none";
     });
+}
+function searchFilter() {
+    var replayp = resetReplays();
+    changeFilter();
+    var input = document.getElementById("searchfilter").value;
+    if(input.length > 0) {
+        const entries = replayp.querySelectorAll("a");
+        entries.forEach(function(a) {
+            let mtitle = a.innerHTML.split(": ")[1];
+            if(!mtitle.includes(input)) a.style.display = "none";
+        });
+    }
 }
 </script>
 </html>
