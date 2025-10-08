@@ -98,11 +98,11 @@ function changeFilter() {
 function searchFilter() {
     var replayp = resetReplays();
     changeFilter();
-    var input = document.getElementById("searchfilter").value;
+    var input = document.getElementById("searchfilter").value.toLowerCase();
     if(input.length > 0) {
         const entries = replayp.querySelectorAll("a");
         entries.forEach(function(a) {
-            let mtitle = a.innerHTML.split(": ")[1];
+            let mtitle = a.innerHTML.split(": ")[1].toLowerCase();
             if(!mtitle.includes(input)) a.style.display = "none";
         });
     }
