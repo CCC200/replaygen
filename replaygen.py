@@ -146,6 +146,8 @@ out_dir = config["out_dir"]
 if not os.path.isdir(log_dir):
     print('Log directory does not exist! Aborting...')
     sys.exit(1)
+if '-clean' in sys.argv and os.path.isdir(out_dir):
+    shutil.rmtree(out_dir)
 if not os.path.isdir(out_dir):
     os.mkdir(out_dir)
 if not os.path.isfile(out_dir + '/index.html'):

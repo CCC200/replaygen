@@ -1,5 +1,5 @@
 # replaygen
-Generate Pokemon Showdown replays from server logs automatically, and view them in-browser, old iOS style.
+Generate Pokemon Showdown replays from server logs automatically and browse them.
 
 ![Screenshot](https://i.imgur.com/iZOsISS.png)
 
@@ -18,3 +18,6 @@ There are some additional parameters you can add to your config file:
 - **client_url**: String pointing to a specific Showdown client. Useful if your server has formats with custom sprites, backgrounds etc.
 - **formats**: An array of format names, i.e. `"formats": ["gen1ou", "gen2ou"]` etc. Will generate replays for matching games. Using `"formats": "all"` will capture every game.
 - **rated**: An array of battle ratings, i.e. `"rated": ["SPL", "Rated Battle"]` etc. Will generate replays for matching games even if the format is not listed. Useful for tournaments.
+
+## Optional commands
+- Adding `-clean` when calling the file, i.e. `replaygen.py -clean`, will regenerate all previous replays.
