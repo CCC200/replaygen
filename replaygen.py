@@ -32,12 +32,14 @@ def convert_log(f):
     r_format = r_id.split('-')[0]
     if not is_format(r_format) and not is_rated(r["log"]): # match conditions
         return 0
-    n = str(r["timestamp"]) + '-' + r_id + '.html'
+    n = str(r["timestamp"]) + '-' + r_id
     p = out_dir + '/' + n
-    if os.path.isfile(p): # log already converted
+    if os.path.isdir(p): # log already converted
         return 0
+    else:
+        os.mkdir(p)
     html = Download.create_replay(r, client_url + '/js/replay-embed.js')
-    rfile = open(p, 'w', encoding='utf-8')
+    rfile = open(p + '/index.html', 'w', encoding='utf-8')
     rfile.write(html)
     rfile.close()
     print(f'Generated {n}')
@@ -53,7 +55,7 @@ def build_index():
             if e.name != 'index.html':
                 unix = int(e.name.split('-')[0])
                 timestamp = datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S')
-                f = open(e.path, 'r', encoding='utf-8')
+                f = open(e.path + '/index.html', 'r', encoding='utf-8')
                 lines = f.readlines()
                 f.close()
                 title = lines[3].replace("<title>", "").replace("</title>", "")
