@@ -1,0 +1,33 @@
+/* scaling */
+.replay-wrapper {
+	max-width:1180px;
+	margin:0 auto;
+	justify-content: center;
+	@media screen and (max-width: 800px) {
+		margin-top: -4%;
+		max-width: 98%;
+		margin-left: -2%;
+	}
+}
+.battle-log {
+	@media screen and (max-width: 800px) {
+		width: 106%;
+		max-height: 75%;
+		margin-top: 61%;
+		margin-right: 52%;
+		justify-self: center;
+	}
+}
+.replay-controls {
+	@media screen and (max-width: 800px) {
+		margin-top: 56.5%;
+		margin-left: -6%;
+		width: 120%;
+		scale: 90%;
+	}
+}
+.replay-controls-2 {
+	@media screen and (max-width: 800px) {
+		margin-top: 57%;
+	}
+}

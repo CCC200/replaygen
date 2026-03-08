@@ -39,6 +39,14 @@ def convert_log(f):
     else:
         os.mkdir(p)
     html = Download.create_replay(r, client_url + '/js/replay-embed.js')
+    # custom inject
+    cssfile = open('html/custom.css', 'r')
+    css = cssfile.read()
+    cssfile.close()
+    html = html.replace('<!-- version 1 -->', '<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n<!-- version 1 -->')
+    html = html.replace('</style>', f'{css}</style>')
+    html = html.replace('<div class="wrapper replay-wrapper" style="max-width:1180px;margin:0 auto">', '<div class="wrapper replay-wrapper">')
+    # write file
     rfile = open(p + '/index.html', 'w', encoding='utf-8')
     rfile.write(html)
     rfile.close()
@@ -61,7 +69,7 @@ def build_index():
                 title = lines[3].replace("<title>", "").replace("</title>", "")
                 replayfiles.append([e.name, title, timestamp])
     # load template
-    templatefile = open('index-template.html', 'r')
+    templatefile = open('html/index-template.html', 'r')
     html = templatefile.read()
     templatefile.close()
     # add list entries
@@ -154,7 +162,7 @@ if not os.path.isdir(out_dir):
     os.mkdir(out_dir)
 if not os.path.isfile(out_dir + '/index.html'):
     print('Index does not exist, creating default...')
-    shutil.copyfile('index-template.html', out_dir + '/index.html')
+    shutil.copyfile('html/index-template.html', out_dir + '/index.html')
 # full scan then loop
 scan_full()
 print('Scanning for new logs...')
