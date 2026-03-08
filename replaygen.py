@@ -66,7 +66,7 @@ def build_index():
                 f = open(e.path + '/index.html', 'r', encoding='utf-8')
                 lines = f.readlines()
                 f.close()
-                title = lines[3].replace("<title>", "").replace("</title>", "")
+                title = lines[4].replace("<title>", "").replace("</title>", "")
                 replayfiles.append([e.name, title, timestamp])
     # load template
     templatefile = open('html/index-template.html', 'r')
