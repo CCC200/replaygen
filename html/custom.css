@@ -4,30 +4,29 @@
 	margin:0 auto;
 	justify-content: center;
 	@media screen and (max-width: 800px) {
-		margin-top: -4%;
-		max-width: 98%;
-		margin-left: -2%;
+		margin-top: -5%;
+		max-width: 100%;
 	}
 }
 .battle-log {
 	@media screen and (max-width: 800px) {
-		width: 106%;
+		width: 100%;
 		max-height: 75%;
-		margin-top: 61%;
+		margin-top: 56%;
 		margin-right: 52%;
 		justify-self: center;
 	}
 }
 .replay-controls {
 	@media screen and (max-width: 800px) {
-		margin-top: 56.5%;
-		margin-left: -6%;
-		width: 120%;
 		scale: 90%;
+		margin-top: 51.5%;
+		margin-left: -5%;
+		width: 110%;
 	}
 }
 .replay-controls-2 {
 	@media screen and (max-width: 800px) {
-		margin-top: 57%;
+		margin-top: 52%;
 	}
 }
