@@ -46,10 +46,15 @@ def convert_log(f):
     html = html.replace('<!-- version 1 -->', '<meta name="viewport" content="width=device-width, initial-scale=1.0" />\n<!-- version 1 -->')
     html = html.replace('</style>', f'{css}</style>')
     html = html.replace('<div class="wrapper replay-wrapper" style="max-width:1180px;margin:0 auto">', '<div class="wrapper replay-wrapper">')
-    # write file
+    # write files
     rfile = open(p + '/index.html', 'w', encoding='utf-8')
     rfile.write(html)
     rfile.close()
+    r_api = r
+    r_api['players'] = [r_api.pop('p1'), r_api.pop('p2')]
+    jfile = open(f'{out_dir}/{n}.json', 'w', encoding='utf-8')
+    jfile.write(json.dumps(r_api, indent=4))
+    jfile.close()
     print(f'Generated {n}')
     return 1
     
@@ -60,7 +65,7 @@ def build_index():
     # scan folder for replay files and build list
     with os.scandir(out_dir) as d:
         for e in d:
-            if e.name != 'index.html':
+            if e.name != 'index.html' and not e.name.endswith('.json'):
                 unix = int(e.name.split('-')[0])
                 timestamp = datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S')
                 f = open(e.path + '/index.html', 'r', encoding='utf-8')
