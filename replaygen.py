@@ -19,7 +19,7 @@ def is_rated(log):
             return True
     return False
 
-def convert_log(f):
+def convert_log(f, overwrite = False):
     # f = filepath
     # get battle log as json
     logfile = open(f, 'r', encoding='utf-8')
@@ -35,7 +35,8 @@ def convert_log(f):
     n = str(r["timestamp"]) + '-' + r_id
     p = out_dir + '/' + n
     if os.path.isdir(p): # log already converted
-        return 0
+        if not overwrite:
+            return 0
     else:
         os.mkdir(p)
     html = Download.create_replay(r, client_url + '/js/replay-embed.js')
@@ -127,7 +128,7 @@ def scan_logs(full = False):
         with os.scandir(dir) as d:
             for e in d:
                 if e.is_file() and '.log.json' in e.name:
-                    gens += convert_log(e.path)
+                    gens += convert_log(e.path, full)
     if gens > 0:
         print(f'{gens} replays generated, rebuilding index...', end=' ')
         build_index()
@@ -161,8 +162,6 @@ out_dir = config["out_dir"]
 if not os.path.isdir(log_dir):
     print('Log directory does not exist! Aborting...')
     sys.exit(1)
-if '-clean' in sys.argv and os.path.isdir(out_dir):
-    shutil.rmtree(out_dir)
 if not os.path.isdir(out_dir):
     os.mkdir(out_dir)
 if not os.path.isfile(out_dir + '/index.html'):
